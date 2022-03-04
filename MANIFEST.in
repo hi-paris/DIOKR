@@ -1,0 +1,7 @@
+#File to add or remove files from the standard distribution
+
+#Add files
+include [namepackage]/[pathfile]
+
+#Remove files
+exclude [namepackage]/[pathfile]

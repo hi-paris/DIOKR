@@ -1,0 +1,6 @@
+#File to indicate what needs to be installed prior to setup but not mandatory for executing
+#Example below
+
+#[build-system]
+#requires = ["setuptools", "wheel", "numpy>=1.19.0", "Cython>=0.29.21","sklearn"]
+#build-backend = "setuptools.build_meta"

@@ -1,0 +1,2 @@
+#To generate requirements file (your virtual env. has to be clean) :
+#pip freeze > requirements.txt
