@@ -15,8 +15,8 @@ dist.Distribution().fetch_build_eggs(['Cython', 'numpy==1.20.0'])
 
 import numpy
 
-with open('README.rst') as readme_file:
-    readme = readme_file.read()
+# with open('README.rst') as readme_file:
+#     readme = readme_file.read()
 
 # with open('HISTORY.rst') as history_file:
 #     history = history_file.read()
