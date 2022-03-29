@@ -10,8 +10,6 @@ colorama==0.4.4
 cryptography==36.0.2
 cycler==0.11.0
 Cython==0.29.28
-ddalphalearn==0.0.0
-DIOKR==0.0.0
 docutils==0.18.1
 fonttools==4.31.2
 h5py==3.6.0
