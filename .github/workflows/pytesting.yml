@@ -42,9 +42,12 @@ jobs:
       run: |
         python setup.py develop
        
-    
-    - name: Test with pytest
+    - name: Run Demo_DeepIOKR_bibtex.py as pyton file
       run: |
-        pip install pytest
-        pytest 
-        #pytest [nametestfile]
+        python tests/Demo_DeepIOKR_bibtex.py  
+    
+#     - name: Test with pytest
+#       run: |
+#         pip install pytest
+#         pytest 
+#         #pytest [nametestfile]
