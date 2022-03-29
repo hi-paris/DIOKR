@@ -1,7 +1,12 @@
-#File to add or remove files from the standard distribution
+include AUTHORS.rst
+include CONTRIBUTING.rst
+include HISTORY.rst
+include LICENSE
+include README.rst
 
-#Add files
-include [namepackage]/[pathfile]
+recursive-include DIOKR/data *.csv *.rst *.jpg *.txt *.arff *.xml *.h5
+recursive-include tests *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
 
-#Remove files
-exclude [namepackage]/[pathfile]
+recursive-include docs *.rst conf.py Makefile make.bat *.jpg *.png *.gif
