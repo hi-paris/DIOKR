@@ -5,8 +5,7 @@
 
 
 # All submodules and packages
-from DIOKR.data.load_data import *
-from DIOKR.data.load_data_IOKR import *
+
 
 
 # __all__ = ['ExtraOK3Regressor', 'OK3Regressor', 'BaseKernelizedOutputTree', 
