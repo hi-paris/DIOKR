@@ -25,7 +25,6 @@ def linear_kernel(X, Y=None):
 
     return K
 
-
 def rbf_kernel(X, Y=None, gamma=None):
     """Compute rbf Gram matrix between X and Y (or X)
     Parameters
@@ -99,7 +98,6 @@ class Kernel(object):
     def __init__(self):
         pass
 
-
 class Gaussian(Kernel):
 
     def __init__(self, gamma):
@@ -142,9 +140,6 @@ class LearnableGaussian(Kernel):
         clone_optim_params = self.optim_params
         return LearnableGaussian(clone_gamma, clone_model, clone_optim_params)
 
-    def regularization(self):
-        return 0
-
     def clear_memory(self):
         self.train_losses, self.test_mse, self.test_f1, self.times = [], [], [], [0]
         
@@ -171,9 +166,6 @@ class LearnableLinear(Kernel):
         clone_model = copy.deepcopy(self.model)
         clone_optim_params = self.optim_params
         return LearnableLinear(clone_model, clone_optim_params)
-
-    def regularization(self):
-        return 0
 
     def clear_memory(self):
         self.train_losses, self.test_mse, self.test_f1, self.times = [], [], [], [0]

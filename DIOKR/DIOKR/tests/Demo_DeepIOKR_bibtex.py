@@ -4,23 +4,25 @@
 import torch
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-from DIOKR.DIOKR import cost, kernel, estimator
-from DIOKR.DIOKR.IOKR import IOKR
-from DIOKR.data.load_data import load_mulan_arff
-from DIOKR.data.load_data import load_bibtex_train, load_bibtex_test
-
+from DIOKR.DIOKR import cost, kernel, estimator, IOKR
 from sklearn.metrics.pairwise import rbf_kernel
 from skmultilearn.dataset import load_from_arff
 from scipy.linalg import block_diag
 import numpy as np
+from os.path import join
+from DIOKR.DIOKR.utils import project_root
 
 import seaborn as sns
 plt.style.use('seaborn')
 
-x_train, y_train = load_bibtex_train()
+
+# Load data
+path_tr = join(project_root(), 'data/bibtex/bibtex-train.arff')
+x_train, y_train = load_from_arff(path_tr, label_count=159)
 x_train, y_train = x_train.todense(), y_train.todense()
 
-x_test, y_test = load_bibtex_test()
+path_te = join(project_root(), 'data/bibtex/bibtex-test.arff')
+x_test, y_test = load_from_arff(path_te, label_count=159)
 x_test, y_test = x_test.todense(), y_test.todense()
 
 x_train, y_train = x_train[:2000], y_train[:2000]
@@ -68,17 +70,17 @@ kernel_input = kernel.LearnableGaussian(
 
 iokr = IOKR()
 
-DIOKR_estimator = estimator.DIOKREstimator(kernel_input, kernel_output,
+diokr_estimator = estimator.DIOKREstimator(kernel_input, kernel_output,
                                            lbda, iokr=iokr, cost=cost_function)
 
 
-DIOKR_estimator.fit_kernel_input(x_train, y_train, x_test, y_test, n_epochs=20, solver='sgd', batch_size_train=batch_size_train)
+diokr_estimator.fit_kernel_input(x_train, y_train, x_test, y_test, n_epochs=20, solver='sgd', batch_size_train=batch_size_train)
 
 
 # plt.figure()
 # plt.title("Training loss evolution when learning the kernel")
-# plt.plot(DIOKR_estimator.kernel_input.train_losses, label="train")
-# #plt.plot(DIOKR_estimator.kernel_input.test_mse, label="test")
+# plt.plot(diokr_estimator.kernel_input.train_losses, label="train")
+# #plt.plot(diokr_estimator.kernel_input.test_mse, label="test")
 # plt.xlabel('epochs')
 # plt.ylabel('loss')
 # plt.legend()
@@ -87,21 +89,21 @@ DIOKR_estimator.fit_kernel_input(x_train, y_train, x_test, y_test, n_epochs=20, 
 
 # plt.figure()
 # plt.title("Test MSE evolution when learning the kernel")
-# #plt.plot(DIOKR_estimator.kernel_input.train_losses, label="train")
-# plt.plot(DIOKR_estimator.kernel_input.test_mse, label="test")
+# #plt.plot(diokr_estimator.kernel_input.train_losses, label="train")
+# plt.plot(diokr_estimator.kernel_input.test_mse, label="test")
 # plt.xlabel('epochs')
 # plt.ylabel('loss')
 # plt.legend()
 # plt.show()
 
 
-DIOKR_estimator.kernel_input.times[-1]/60
+diokr_estimator.kernel_input.times[-1]/60
 
 
 from sklearn.metrics import f1_score
 
-Y_pred_train = DIOKR_estimator.predict(x_test=x_train)
-Y_pred_test = DIOKR_estimator.predict(x_test=x_test)
+Y_pred_train = diokr_estimator.predict(x_test=x_train)
+Y_pred_test = diokr_estimator.predict(x_test=x_test)
 f1_train = f1_score(Y_pred_train, y_train, average='samples')
 f1_test = f1_score(Y_pred_test, y_test, average='samples')
 print("Train f1 score:", f1_train,"/", "Test f1 score:", f1_test)

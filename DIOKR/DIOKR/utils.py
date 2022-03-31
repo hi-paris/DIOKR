@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.io import loadmat
+from pathlib import Path
 
 
 def load_compounds_info(n, data_folder=None):
@@ -83,4 +84,7 @@ def load_data_metabolites(path):
     Y = fingerprints['Y'].T
     
     return X, Y
-    
+
+def project_root() -> Path:
+    """Returns project root folder."""
+    return Path(__file__).parent.parent
