@@ -20,15 +20,12 @@ x_train, y_train = x_train[:2000], y_train[:2000]
 
 x_train = torch.from_numpy(x_train).float()
 
-dim_inputs = x_train.shape[1]
-dim_outputs = int(dim_inputs/2)
-
-x = net.Net1(dim_inputs, dim_outputs)
-
-x = x.get_layers()
-
-print(x)
-print(type(x))
+#dim_inputs = x_train.shape[1]
+#dim_outputs = int(dim_inputs/2)
+#x = net.Net1(dim_inputs, dim_outputs)
+#x = x.get_layers()
+#print(x)
+#print(type(x))
 
 
 
