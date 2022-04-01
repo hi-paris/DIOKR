@@ -65,6 +65,16 @@ class TestLinearKernel():
         assert K is not None, f"'K should not be None"
         assert K != "", f"'K' should not be empty"
 
+    def test_bad_inputation(self):
+        # Test that it handles the case of: Xkernel is a string
+        with pytest.raises(AttributeError):
+            msg = linear_kernel('X_kernel')
+            assert isinstance(msg, AttributeError)
+        # Test that it handles the case of: Xkernel is None
+        with pytest.raises(AttributeError):
+            X_kernel = None
+            msg = linear_kernel(X_kernel)
+            assert isinstance(msg, AttributeError)
 
 class TestRbfKernel():
     "Class test for rbf Kernel function"
@@ -77,6 +87,17 @@ class TestRbfKernel():
         assert K is not None, f"'K should not be None"
         assert K != "", f"'K' should not be empty"
 
+    def test_bad_inputation(self):
+        # Test that it handles the case of: Xkernel is a string
+        with pytest.raises(AttributeError):
+            msg = rbf_kernel('X_kernel')
+            assert isinstance(msg, AttributeError)
+        # Test that it handles the case of: Xkernel is None
+        with pytest.raises(AttributeError):
+            X_kernel = None
+            msg = rbf_kernel(X_kernel)
+            assert isinstance(msg, AttributeError)
+
 class TestGaussianTaniKernel():
     "Class test for rbf Kernel function"
 
@@ -88,6 +109,17 @@ class TestGaussianTaniKernel():
         assert K is not None, f"'K should not be None"
         assert K != "", f"'K' should not be empty"
 
+    def test_bad_inputation(self):
+        # Test that it handles the case of: Xkernel is a string
+        with pytest.raises(AttributeError):
+            msg = gaussian_tani_kernel('X_kernel')
+            assert isinstance(msg, AttributeError)
+        # Test that it handles the case of: Xkernel is None
+        with pytest.raises(AttributeError):
+            X_kernel = None
+            msg = gaussian_tani_kernel(X_kernel)
+            assert isinstance(msg, AttributeError)
+
 class TestGaussianComputeGram():
     "Class test for Gaussian.compute_gram function"
 
@@ -97,6 +129,19 @@ class TestGaussianComputeGram():
         assert type(K) == torch.Tensor, f"'K' should be a torch.Tensor, but is {type(K)}"
         assert K is not None, f"'K should not be None"
         assert K != "", f"'K' should not be empty"
+
+    def test_bad_inputation(self):
+        # Test that it handles the case of: X is a string
+        with pytest.raises(TypeError):
+            kernel_output = kernel.Gaussian(gamma_output)
+            msg = kernel_output.compute_gram('X')
+            assert isinstance(msg, TypeError)
+        # Test that it handles the case of: X  is None
+        with pytest.raises(TypeError):
+            X = None
+            kernel_output = kernel.Gaussian(gamma_output)
+            msg = kernel_output.compute_gram(X)
+            assert isinstance(msg, TypeError)
 
 class TestGaussianTaniComputeGram():
     "Class test for Gaussian.compute_gram function"
@@ -108,6 +153,19 @@ class TestGaussianTaniComputeGram():
         assert K is not None, f"'K should not be None"
         assert K != "", f"'K' should not be empty"
 
+    def test_bad_inputation(self):
+        # Test that it handles the case of: X is a string
+        with pytest.raises(AttributeError):
+            kernel_output = kernel.GaussianTani(gamma_output)
+            msg = kernel_output.compute_gram('X')
+            assert isinstance(msg, AttributeError)
+        # Test that it handles the case of: X  is None
+        with pytest.raises(AttributeError):
+            X = None
+            kernel_output = kernel.GaussianTani(gamma_output)
+            msg = kernel_output.compute_gram(X)
+            assert isinstance(msg, AttributeError)
+
 class TestLearnableGaussian():
 
     def test_compute_gram_output_good_type_and_exists(self):
@@ -117,12 +175,18 @@ class TestLearnableGaussian():
         assert K is not None, f"'K should not be None"
         assert K != "", f"'K' should not be empty"
 
-    def test_compute_gram_frozen_output_good_type_and_exists(self):
-        kernel_output = kernel.LearnableGaussian(gamma_input, model_kernel_input, optim_params)
-        K = kernel_output.compute_gram_frozen(X=x_train, Y=y_train)
-        assert type(K) == torch.Tensor, f"'K' should be a torch.Tensor, but is {type(K)}"
-        assert K is not None, f"'K should not be None"
-        assert K != "", f"'K' should not be empty"
+    def test_bad_inputation(self):
+        # Test that it handles the case of: X is a string
+        with pytest.raises(TypeError):
+            kernel_output = kernel.LearnableGaussian(gamma_input, model_kernel_input, optim_params)
+            msg = kernel_output.compute_gram('X')
+            assert isinstance(msg, TypeError)
+        # Test that it handles the case of: X  is None
+        with pytest.raises(TypeError):
+            X = None
+            kernel_output = kernel.LearnableGaussian(gamma_input, model_kernel_input, optim_params)
+            msg = kernel_output.compute_gram(X)
+            assert isinstance(msg, TypeError)
 
     def test_clone_kernel_output_same_as_origin(self):
         origin_kernel = kernel.LearnableGaussian(gamma_input, model_kernel_input, optim_params)
@@ -137,13 +201,6 @@ class TestLearnableLinear():
     def test_compute_gram_output_good_type_and_exists(self):
         kernel_output = kernel.LearnableLinear(model_kernel_input, optim_params)
         K = kernel_output.compute_gram(X=x_train)
-        assert type(K) == torch.Tensor, f"'K' should be a torch.Tensor, but is {type(K)}"
-        assert K is not None, f"'K should not be None"
-        assert K != "", f"'K' should not be empty"
-
-    def test_compute_gram_frozen_output_good_type_and_exists(self):
-        kernel_output = kernel.LearnableLinear(model_kernel_input, optim_params)
-        K = kernel_output.compute_gram_frozen(X=X_kernel, Y=Y_kernel)
         assert type(K) == torch.Tensor, f"'K' should be a torch.Tensor, but is {type(K)}"
         assert K is not None, f"'K should not be None"
         assert K != "", f"'K' should not be empty"

@@ -124,6 +124,9 @@ class LearnableGaussian(Kernel):
         self.is_learnable = True
         self.model = model
         self.optim_params = optim_params
+        self.train_losses = []
+        self.test_losses = []
+        self.times = [0]
 
     def compute_gram(self, X, Y=None):
         if Y is None:
@@ -131,8 +134,14 @@ class LearnableGaussian(Kernel):
         else:
             return rbf_kernel(self.model.forward(X), self.model.forward(Y), self.gamma)
         
-    def compute_gram_frozen(self, X, Y):
-        return rbf_kernel(X, self.model.forward(Y), self.gamma)
+    def append_train_loss(self, train_loss):
+        self.train_losses.append(train_loss)
+
+    def append_test_loss(self, test_loss):
+        self.test_losses.append(test_loss)
+
+    def append_time(self, time):
+        self.times.append(time)
         
     def clone_kernel(self):
         clone_gamma = self.gamma
@@ -149,6 +158,9 @@ class LearnableLinear(Kernel):
         self.is_learnable = True
         self.model = model
         self.optim_params = optim_params
+        self.train_losses = []
+        self.test_losses = []
+        self.times = [0]
         
     def model_forward(self, X):
         return self.model.forward(X)
@@ -158,14 +170,20 @@ class LearnableLinear(Kernel):
             return linear_kernel(self.model.forward(X), Y=None)
         else:
             return linear_kernel(self.model.forward(X), self.model.forward(Y))
-        
-    def compute_gram_frozen(self, X, Y):
-        return linear_kernel(X, self.model.forward(Y))
             
     def clone_kernel(self):
         clone_model = copy.deepcopy(self.model)
         clone_optim_params = self.optim_params
         return LearnableLinear(clone_model, clone_optim_params)
+
+    def append_train_loss(self, train_loss):
+        self.train_losses.append(train_loss)
+
+    def append_test_loss(self, test_loss):
+        self.test_losses.append(test_loss)
+
+    def append_time(self, time):
+        self.times.append(time)
 
     def clear_memory(self):
         self.train_losses, self.test_mse, self.test_f1, self.times = [], [], [], [0]
