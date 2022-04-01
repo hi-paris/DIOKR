@@ -23,22 +23,25 @@ class DIOKREstimator(object):
 
     def objective(self, x_batch, y_batch):
         "Computes the objectif function to be minimized, sum of the cost +regularization"
-        
+
         self.iokr.fit(X_s=x_batch, Y_s=y_batch, L=self.lbda, input_kernel=self.kernel_input,
-                        output_kernel=self.kernel_output, input_gamma=self.kernel_input.gamma)
+                      output_kernel=self.kernel_output, input_gamma=self.kernel_input.gamma)
         K_x = self.kernel_input.compute_gram(x_batch)
         K_y = self.kernel_output.compute_gram(y_batch)
-        obj = self.iokr.sloss(K_x, K_y) + self.lbda * self.iokr.vv_norm
-                
-        return obj 
-            
-    def train_kernel_input(self, x_batch, y_batch, solver, t0):
+        obj = self.iokr.sloss(K_x, K_y) + self.lbda * self.iokr.get_vv_norm()
+
+        return obj
+
+    def train_kernel_input(self, x_batch, y_batch, solver: str, t0):
         """
         One step of the gradient descent using Stochastic Gradient Descent during the fitting of the input kernel
         when using a learnable neural network kernel input
         """
+        if solver not in ('sgd', 'adam'):
+            raise ValueError(f"'solver' should be 'sgd' or 'adam',but not {solver}")
+        if type(t0) not in (int, float):
+            raise TypeError(f"'t0' should be an int, not a {type(t0)}")
         if solver == 'sgd':
-
             optimizer_kernel = optim.SGD(
                 self.kernel_input.model.parameters(),
                 lr=self.kernel_input.optim_params['lr'],
@@ -46,9 +49,8 @@ class DIOKREstimator(object):
                 dampening=self.kernel_input.optim_params['dampening'],
                 weight_decay=self.kernel_input.optim_params['weight_decay'],
                 nesterov=self.kernel_input.optim_params['nesterov'])
-        
+
         if solver == 'adam':
-        
             optimizer_kernel = optim.Adam(
                 self.kernel_input.model.parameters(),
                 lr=self.kernel_input.optim_params['lr'],
@@ -60,24 +62,30 @@ class DIOKREstimator(object):
         def closure_kernel():
             loss = self.objective(x_batch, y_batch)
             optimizer_kernel.zero_grad()
-            #torch.autograd.set_detect_anomaly(True)
-            #loss.backward(retain_graph=True)
+            # torch.autograd.set_detect_anomaly(True)
+            # loss.backward(retain_graph=True)
             loss.backward()
-            return(loss)
+            return (loss)
 
         loss = closure_kernel()
-        self.kernel_input.times.append(time() - t0)
+        self.kernel_input.append_time(time() - t0)
         optimizer_kernel.step(closure_kernel)
 
-        mse_train = loss - self.lbda * self.iokr.vv_norm
-        
+        mse_train = loss - self.lbda * self.iokr.get_vv_norm()
+
         return mse_train.item()
-            
+
     def fit_kernel_input(self, x_train, y_train, x_test, y_test, n_epochs=50, solver='sgd', batch_size_train=64, batch_size_test=None, verbose=True):
         """
         Fits the input kernel when using a learnable neural network kernel input using the method train_kernel_input
         at each epoch.
         """
+        if solver not in ('sgd', 'adam'):
+            raise ValueError(f"'solver' should be 'sgd' or 'adam',but not {solver}")
+        if type(n_epochs) != int:
+            raise TypeError(f"'n_epochs' should be an int, not a {type(n_epochs)}")
+        if type(batch_size_train) != int:
+            raise TypeError(f"'batch_size_train' should be an int, not a {type(batch_size_train)}")
 
         self.verbose = verbose
                 

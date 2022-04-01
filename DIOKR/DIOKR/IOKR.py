@@ -3,7 +3,6 @@ from sklearn.metrics.pairwise import rbf_kernel
 import numpy as np
 import scipy as sp
 import torch
-from DIOKR.DIOKR.utils import load_candidates
 from time import time
 
 
@@ -137,3 +136,9 @@ class IOKR(object):
         mse = torch.mean(se)
 
         return mse
+
+    def get_vv_norm(self):
+        """
+            Returns the vv norm of the estimator fitted
+        """
+        return self.vv_norm

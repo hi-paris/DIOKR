@@ -1,6 +1,5 @@
 import torch
 import numpy as np
-from DIOKR.DIOKR.utils import load_candidates
 
 def sloss(Omega, K_x_tr_ba, K_y_tr_ba, K_y_ba_ba, K_y):
     
