@@ -72,8 +72,15 @@ diokr_estimator = estimator.DIOKREstimator(kernel_input, kernel_output,
 # obj = diokr_estimator.objective(x_batch = x_train , y_batch = y_train)
 
 class TestObjective():
+    """Test class for 'objective' function"""
 
     def test_objective_returns_good_type_and_size(self):
+        """Test that objective returns good type
+
+        Returns
+        -------
+        None
+        """
         obj = diokr_estimator.objective(x_batch=x_train, y_batch=y_train)
         assert type(obj) == torch.Tensor, f"'obj' should be of type 'torch.Tensor', but is of type {type(obj)}"
         # assert obj.Size() == ,
@@ -111,9 +118,23 @@ class TestObjective():
 
 
 class TestTrainKernelInput():
+    """Test class for train_kernel_input function"""
 
     @pytest.mark.parametrize("key, solver", SOLVERS.items())
     def test_train_kernel_input_returns_good_type(self, key, solver):
+        """Test that train_kernel_input returns good type
+
+        Parameters
+        ----------
+        key : fixture/str
+        key of the dict solver
+        solver : fixture/str
+        value of the dict solver
+
+        Returns
+        -------
+        None
+        """
         mse_train = diokr_estimator.train_kernel_input(x_batch=x_train,
                                                        y_batch=y_train,
                                                        solver=solver,
@@ -149,7 +170,20 @@ class TestTrainKernelInput():
             assert msg.args[0] == f"'solver' should be 'sgd' or 'adam',but not {solver}"
 
     @pytest.mark.parametrize("key, solver", SOLVERS.items())
-    def test_t0_bad_inputation(self,key, solver ):
+    def test_t0_bad_inputation(self, key, solver ):
+        """Test train_kernel_input when t0 is a bad inputation
+
+        Parameters
+        ----------
+        key : fixture/str
+        key of the dict solver
+        solver : fixture/str
+        value of the dict solver
+
+        Returns
+        -------
+        None
+        """
         with pytest.raises(TypeError):
             # Insert None in t0
             Xt, yt = x_train, y_train
@@ -173,6 +207,19 @@ class TestTrainKernelInput():
 
     @pytest.mark.parametrize("key, solver", SOLVERS.items())
     def test_XY_batch_bad_inputation(self, key, solver ):
+        """Test train_kernel_input when X/Y batch has bad inputation
+
+        Parameters
+        ----------
+        key : fixture/str
+        key of the dict solver
+        solver : fixture/str
+        value of the dict solver
+
+        Returns
+        -------
+        None
+        """
         with pytest.raises(TypeError) as exception:
             # Insert a string into the X array
             Xt, yt = x_train, y_train
@@ -257,6 +304,12 @@ class TestFitKernelInput():
             assert msg.args[0] == f"'n_epochs' should be an int, not a {type(n_epochs)}"
 
     def test_solver_bad_inputation(self, ):
+        """Test fit_kernel_inputation when solver has bad inputation
+
+        Returns
+        -------
+        None
+        """
         with pytest.raises(ValueError):
             # Insert None in solver
             solver = None
@@ -275,6 +328,19 @@ class TestFitKernelInput():
 
     @pytest.mark.parametrize("key, solver", SOLVERS.items())
     def test_batch_size_bad_inputation(self, key, solver):
+        """Test fit_kernel_inputation when batch_size has bad inputation
+
+        Parameters
+        ----------
+        key : fixture/str
+        key of the dict solver
+        solver : fixture/str
+        value of the dict solver
+
+        Returns
+        -------
+        None
+        """
         with pytest.raises(TypeError):
             # Insert None in batchsize
             Xt, yt = x_train, y_train
@@ -293,6 +359,19 @@ class TestFitKernelInput():
 
     @pytest.mark.parametrize("key, solver", SOLVERS.items())
     def test_XY_bad_inputation(self, key, solver):
+        """Test fit_kernel_input when XY has bad inputation
+
+        Parameters
+        ----------
+        key : fixture/str
+        key of the dict solver
+        solver : fixture/str
+        value of the dict solver
+
+        Returns
+        -------
+        None
+        """
         with pytest.raises(TypeError) as exception:
             # Insert a string into the X array
             Xt, yt = x_train, y_train
@@ -347,9 +426,23 @@ class TestFitKernelInput():
             assert msg.args[0] == "'str' object has no attribute 'clone'"
 
 class TestPredict():
+    """Test class for predict function"""
 
     @pytest.mark.parametrize("key, solver", SOLVERS.items())
     def test_predict_returns_good_type_and_shape(self, key, solver):
+        """Test that predict function return good type and shape
+
+        Parameters
+        ----------
+        key : fixture/str
+        key of the dict solver
+        solver : fixture/str
+        value of the dict solver
+
+        Returns
+        -------
+        None
+        """
         diokr_estimator.fit_kernel_input(x_train, y_train, x_test, y_test,
                                          n_epochs=10, solver=solver, batch_size_train=batch_size_train)
         Y_pred_test = diokr_estimator.predict(x_test=x_test)

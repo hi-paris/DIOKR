@@ -30,8 +30,21 @@ x_train = torch.from_numpy(x_train).float()
 
 
 class TestNet1():
+    """Test class for Net1 function"""
 
     def test_net_instance_good_shape(self, capfd):
+        """Test that a Net1 instance has good shape
+
+        Parameters
+        ----------
+        capfd: fixture
+        Allows access to stdout/stderr output created
+        during test execution.
+
+        Returns
+        -------
+        None
+        """
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net1(dim_inputs, dim_outputs)
@@ -40,6 +53,12 @@ class TestNet1():
         assert out != f"Net1((linear): Linear(in_features={dim_inputs}, out_features={dim_outputs}, bias=True))"
 
     def test_net_forward_returns_good_type(self, ):
+        """Tests that a net1 instance has good type
+
+        Returns
+        -------
+        None
+        """
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net1(dim_inputs, dim_outputs)
@@ -47,6 +66,12 @@ class TestNet1():
         assert type(x) == torch.Tensor, f"'x' should be a torch.Tensor, but is {type(x)}"
 
     def test_net_get_layers_returns_good_type(self, ):
+        """Test that net.get_layers function returns good type
+
+        Returns
+        -------
+        None
+        """
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net1(dim_inputs, dim_outputs)
@@ -56,6 +81,18 @@ class TestNet1():
 class TestNet2():
 
     def test_net_instance_good_shape(self, capfd):
+        """Test that a Net2 instance has good shape
+
+        Parameters
+        ----------
+        capfd: fixture
+        Allows access to stdout/stderr output created
+        during test execution.
+
+        Returns
+        -------
+        None
+        """
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net2(dim_inputs, dim_outputs)
@@ -64,6 +101,12 @@ class TestNet2():
         assert out != f"Net1((linear): Linear(in_features={dim_inputs}, out_features={dim_outputs}, bias=True))"
 
     def test_net_forward_returns_good_type(self):
+        """Tests that a net1 instance has good type
+
+        Returns
+        -------
+        None
+        """
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net2(dim_inputs, dim_outputs)
@@ -71,6 +114,12 @@ class TestNet2():
         assert type(x) == torch.Tensor, f"'x' should be a torch.Tensor, but is {type(x)}"
 
     def test_net_get_layers_returns_good_type(self, ):
+        """Test that net.get_layers function returns good type
+
+        Returns
+        -------
+        None
+        """
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net2(dim_inputs, dim_outputs)
@@ -80,6 +129,19 @@ class TestNet2():
 class TestNet3():
 
     def test_net_instance_good_shape(self, capfd):
+        """Test that a Net3 instance has good shape
+
+        Parameters
+        ----------
+        capfd: fixture
+        Allows access to stdout/stderr output created
+        during test execution.
+
+        Returns
+        -------
+        None
+        """
+
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net3(dim_inputs, dim_outputs)
@@ -88,6 +150,12 @@ class TestNet3():
         assert out != f"Net1((linear): Linear(in_features={dim_inputs}, out_features={dim_outputs}, bias=True))"
 
     def test_net_forward_returns_good_type(self, ):
+        """Tests that a net1 instance has good type
+
+        Returns
+        -------
+        None
+        """
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net3(dim_inputs, dim_outputs)
@@ -95,6 +163,12 @@ class TestNet3():
         assert type(x) == torch.Tensor, f"'x' should be a torch.Tensor, but is {type(x)}"
 
     def test_net_get_layers_returns_good_type(self, ):
+        """Test that net.get_layers function returns good type
+
+        Returns
+        -------
+        None
+        """
         dim_inputs = x_train.shape[1]
         dim_outputs = int(dim_inputs / 2)
         x = net.Net3(dim_inputs, dim_outputs)
