@@ -58,6 +58,12 @@ class TestLinearKernel():
     "Class test for linear Kernel function"
 
     def test_output_good_type_and_exists(self):
+        """Test that linear_kernel outputs exists with good type
+
+        Returns
+        -------
+        None
+        """
         K = linear_kernel(X_kernel)
         #print("XK:",X_kernel)
         #print("K:", K)
@@ -66,6 +72,12 @@ class TestLinearKernel():
         assert K != "", f"'K' should not be empty"
 
     def test_bad_inputation(self):
+        """Tests that linear_kernel reacts well with bad inputation
+
+        Returns
+        -------
+        None
+        """
         # Test that it handles the case of: Xkernel is a string
         with pytest.raises(AttributeError):
             msg = linear_kernel('X_kernel')
@@ -80,6 +92,12 @@ class TestRbfKernel():
     "Class test for rbf Kernel function"
 
     def test_output_good_type_and_exists(self):
+        """Tests that rbf_kernel output exists with good type
+
+        Returns
+        -------
+        None
+        """
         K = rbf_kernel(X_kernel)
         #print("XK:",X_kernel)
         #print("K:", K)
@@ -88,6 +106,12 @@ class TestRbfKernel():
         assert K != "", f"'K' should not be empty"
 
     def test_bad_inputation(self):
+        """Test how rbf_kernel reacts with bad inputation
+
+        Returns
+        -------
+        None
+        """
         # Test that it handles the case of: Xkernel is a string
         with pytest.raises(AttributeError):
             msg = rbf_kernel('X_kernel')
@@ -102,6 +126,12 @@ class TestGaussianTaniKernel():
     "Class test for rbf Kernel function"
 
     def test_output_good_type_and_exists(self):
+        """tests that gaussian_tani_kernel output exists with good type
+
+        Returns
+        -------
+        None
+        """
         K = gaussian_tani_kernel(X_kernel)
         #print("XK:",X_kernel)
         #print("K:", K)
@@ -110,6 +140,12 @@ class TestGaussianTaniKernel():
         assert K != "", f"'K' should not be empty"
 
     def test_bad_inputation(self):
+        """Tests how gaussian_tani_kernel reacts with bad inputation
+
+        Returns
+        -------
+        None
+        """
         # Test that it handles the case of: Xkernel is a string
         with pytest.raises(AttributeError):
             msg = gaussian_tani_kernel('X_kernel')
@@ -124,6 +160,12 @@ class TestGaussianComputeGram():
     "Class test for Gaussian.compute_gram function"
 
     def test_output_good_type_and_exists(self):
+        '''Tests that gaussian.compute_gram output exists and returns good type
+
+        Returns
+        -------
+        None
+        '''
         kernel_output = kernel.Gaussian(gamma_output)
         K = kernel_output.compute_gram(X=X_kernel)
         assert type(K) == torch.Tensor, f"'K' should be a torch.Tensor, but is {type(K)}"
@@ -131,6 +173,12 @@ class TestGaussianComputeGram():
         assert K != "", f"'K' should not be empty"
 
     def test_bad_inputation(self):
+        '''Tests how gaussian.compute_gram reacts with bad inputation
+
+        Returns
+        -------
+        None
+        '''
         # Test that it handles the case of: X is a string
         with pytest.raises(TypeError):
             kernel_output = kernel.Gaussian(gamma_output)
@@ -147,6 +195,12 @@ class TestGaussianTaniComputeGram():
     "Class test for Gaussian.compute_gram function"
 
     def test_output_good_type_and_exists(self):
+        """Tests that GaussianTani.compute_gram output exists with good type
+
+        Returns
+        -------
+        None
+        """
         kernel_output = kernel.GaussianTani(gamma_output)
         K = kernel_output.compute_gram(X=X_kernel)
         assert type(K) == torch.Tensor, f"'K' should be a torch.Tensor, but is {type(K)}"
@@ -154,6 +208,12 @@ class TestGaussianTaniComputeGram():
         assert K != "", f"'K' should not be empty"
 
     def test_bad_inputation(self):
+        """Tests that GaussianTani.compute_gram reacts well with bad inputation
+
+        Returns
+        -------
+        None
+        """
         # Test that it handles the case of: X is a string
         with pytest.raises(AttributeError):
             kernel_output = kernel.GaussianTani(gamma_output)
@@ -167,8 +227,15 @@ class TestGaussianTaniComputeGram():
             assert isinstance(msg, AttributeError)
 
 class TestLearnableGaussian():
+    '''Test class for LearnableGaussian'''
 
     def test_compute_gram_output_good_type_and_exists(self):
+        """Tests that learnablegaussian.compute_gram output exists with good type
+
+        Returns
+        -------
+        None
+        """
         kernel_output = kernel.LearnableGaussian(gamma_input, model_kernel_input, optim_params)
         K = kernel_output.compute_gram(X=x_train)
         assert type(K) == torch.Tensor, f"'K' should be a torch.Tensor, but is {type(K)}"
@@ -176,6 +243,12 @@ class TestLearnableGaussian():
         assert K != "", f"'K' should not be empty"
 
     def test_bad_inputation(self):
+        '''Tests that learnablegaussian.compute_gram reacts well with bad inputation
+
+        Returns
+        -------
+        None
+        '''
         # Test that it handles the case of: X is a string
         with pytest.raises(TypeError):
             kernel_output = kernel.LearnableGaussian(gamma_input, model_kernel_input, optim_params)
@@ -189,6 +262,12 @@ class TestLearnableGaussian():
             assert isinstance(msg, TypeError)
 
     def test_clone_kernel_output_same_as_origin(self):
+        """Tests that learnablegaussian.clone_kernel works as intended
+
+        Returns
+        -------
+        None
+        """
         origin_kernel = kernel.LearnableGaussian(gamma_input, model_kernel_input, optim_params)
         cloned_kernel = origin_kernel.clone_kernel()
         #assert cloned_kernel.optim_params == kernel_output.optim_params
@@ -197,8 +276,15 @@ class TestLearnableGaussian():
 
 
 class TestLearnableLinear():
+    """class test for LearnableLinear"""
 
     def test_compute_gram_output_good_type_and_exists(self):
+        """Tests that LearnableLinear.compute_gram output exists with good type
+
+        Returns
+        -------
+        None
+        """
         kernel_output = kernel.LearnableLinear(model_kernel_input, optim_params)
         K = kernel_output.compute_gram(X=x_train)
         assert type(K) == torch.Tensor, f"'K' should be a torch.Tensor, but is {type(K)}"
@@ -206,6 +292,12 @@ class TestLearnableLinear():
         assert K != "", f"'K' should not be empty"
 
     def test_clone_kernel_output_same_type_as_origin(self):
+        """Tests that learnablelinear.clone_kernel works as intended
+
+        Returns
+        -------
+        None
+        """
         origin_kernel = kernel.LearnableLinear(model_kernel_input, optim_params)
         cloned_kernel = origin_kernel.clone_kernel()
         #assert cloned_kernel.optim_params == kernel_output.optim_params
